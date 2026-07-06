@@ -19,7 +19,7 @@ export default function Donation() {
           <small className="iv-donate-group-label">GCash Accounts</small>
           <div className="iv-donate-grid">
             {gcashAccounts.map((acc) => (
-              <div className="iv-donate-card disabled" key={acc.name}>
+              <div className="iv-donate-card" key={acc.name}>
                 <Smartphone size={20} />
                 <small>{acc.name}</small>
                 <strong>{acc.number}</strong>

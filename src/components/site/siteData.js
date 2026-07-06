@@ -18,6 +18,7 @@ export const navLinks = [
   ["Home", "#landing"],
   ["Server Information", "#server"],
   ["Download", "#download"],
+  ["Donation", "#donation"], 
   ["Community", "#community"],
 ];
 

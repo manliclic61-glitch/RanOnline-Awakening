@@ -1,10 +1,14 @@
 import { useState } from "react";
 import { Download, Menu, X } from "lucide-react";
 import ranLogo from "../../assets/ran_logo.png";
-import { navLinks } from "./siteData";
+import { navLinks, serverFlag } from "./siteData";
 
 export default function NavBar() {
   const [menuOpen, setMenuOpen] = useState(false);
+
+  const visibleLinks = navLinks.filter(
+    ([, href]) => serverFlag || href !== "#donation"
+  );
 
   return (
     <nav className="iv-nav">
@@ -18,7 +22,7 @@ export default function NavBar() {
         </a>
 
         <div className="iv-nav-links">
-          {navLinks.map(([label, href]) => (
+          {visibleLinks.map(([label, href]) => (
             <a href={href} key={href}>{label}</a>
           ))}
         </div>
@@ -39,7 +43,7 @@ export default function NavBar() {
       </div>
 
       <div className={`iv-container iv-mobile-menu ${menuOpen ? "open" : ""}`}>
-        {navLinks.map(([label, href]) => (
+        {visibleLinks.map(([label, href]) => (
           <a href={href} key={href} onClick={() => setMenuOpen(false)}>{label}</a>
         ))}
       </div>
