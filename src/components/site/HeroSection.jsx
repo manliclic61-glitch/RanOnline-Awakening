@@ -1,7 +1,7 @@
 import { ArrowRight, Download } from "lucide-react";
 import heroTrailer from "../../assets/Ran Online Awakening Official Trailer.mp4";
 import StatusPulse from "./StatusPulse";
-
+import { serverFlag } from "./siteData";
 export default function HeroSection() {
   return (
     <header className="iv-hero" id="landing">
@@ -17,8 +17,8 @@ export default function HeroSection() {
       <div className="iv-container iv-hero-grid">
         <div>
           <div className="iv-kicker">
-            <StatusPulse />
-            Coming Very Soon!
+            <StatusPulse online={serverFlag} />
+            {serverFlag ? "Server Online" : "Coming Very Soon!"}
           </div>
           <h1 className="iv-display">
             RAN Online <span>Awakening</span>

@@ -110,5 +110,5 @@ export const bankAccounts = [
   { bank: "BPI", accountName: "Maria Santos", accountNumber: "XXXX XXXX XXXX" },
 ];
 
-// siteData.js
+
 export const serverFlag = false;
