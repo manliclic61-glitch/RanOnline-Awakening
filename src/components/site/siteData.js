@@ -80,6 +80,12 @@ export const downloadItems = [
     body: "Use the Google Drive mirror if Mega is slow or unavailable in your region.",
     icon: Download,
     href: "https://drive.google.com/",
+  },{
+    title: "Media Fire",
+    meta: "Alternative mirror",
+    body: "Use the Media Fire mirror if Mega/Google Drive is slow or unavailable in your region.",
+    icon: Download,
+    href: "https://www.mediafire.com/",
   },
 ];
 
@@ -87,3 +93,22 @@ export const communityLinks = [
   { label: "Discord", value: "Live support and announcements", icon: MessageCircle, href: "https://discord.gg/your-invite" },
   { label: "Facebook", value: "Events, Promotionals, and updates", icon: Globe2, href: "https://www.facebook.com/profile.php?id=61590630241347" },
 ];
+
+
+
+export const gcashAccounts = [
+  { name: "Juan Dela Cruz", number: "0917 XXX XXXX" },
+  { name: "Maria Santos", number: "0918 XXX XXXX" },
+  { name: "Pedro Reyes", number: "0919 XXX XXXX" },
+  { name: "Ana Garcia", number: "0920 XXX XXXX" },
+  { name: "Jose Ramirez", number: "0921 XXX XXXX" },
+ 
+];
+
+export const bankAccounts = [
+  { bank: "BDO", accountName: "Juan Dela Cruz", accountNumber: "XXXX XXXX XXXX" },
+  { bank: "BPI", accountName: "Maria Santos", accountNumber: "XXXX XXXX XXXX" },
+];
+
+// siteData.js
+export const serverFlag = false;

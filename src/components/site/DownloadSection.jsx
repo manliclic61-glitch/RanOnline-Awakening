@@ -1,7 +1,6 @@
 import { ArrowRight } from "lucide-react";
 import downloadBackground from "../../assets/739012693_122118871461354341_236593273800252475_n.jpg";
-import { downloadItems } from "./siteData";
-
+import { downloadItems, serverFlag } from "./siteData";
 export default function DownloadSection() {
   return (
     <section
@@ -26,13 +25,21 @@ export default function DownloadSection() {
             const Icon = item.icon;
             return (
               <article className="iv-download-card" key={item.title}>
-                <div className="iv-download-icon"><Icon size={23} /></div>
+                <div className="iv-download-icon">
+                  <Icon size={23} />
+                </div>
                 <small>{item.meta}</small>
                 <h3>{item.title}</h3>
                 <p>{item.body}</p>
-                <a href={item.href} target="_blank" rel="noreferrer">
-                  Coming Soon! <ArrowRight size={15} />
-                </a>
+                {serverFlag  ? (
+                  <a href={item.href} target="_blank" rel="noreferrer">
+                    Download Now! <ArrowRight size={15} />
+                  </a>
+                ) : (
+                  <span className="iv-download-disabled" aria-disabled="true">
+                    Coming Soon
+                  </span>
+                )}
               </article>
             );
           })}
