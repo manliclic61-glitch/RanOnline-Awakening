@@ -7,6 +7,8 @@ import SiteFooter from "./site/SiteFooter";
 import Donation from "./site/Donation";
 import "./site/site.css";
 import { serverFlag } from "./site/siteData";
+import UpdatesSection from "./site/Updates";
+
 export default function RanOnlineServerSite() {
   return (
     <div className="iv-root">
@@ -15,8 +17,8 @@ export default function RanOnlineServerSite() {
       <main>
         <ServerInfoSection />
         <DownloadSection />
-       {serverFlag && <Donation />}
-      
+        {serverFlag && <Donation />}
+        <UpdatesSection />
         <CommunitySection />
       </main>
       <SiteFooter />

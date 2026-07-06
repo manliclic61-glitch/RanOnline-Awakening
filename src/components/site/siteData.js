@@ -1,3 +1,5 @@
+import { useState, useEffect, useCallback, useRef } from "react";
+import Papa from "papaparse";
 import {
   Crosshair,
   Download,
@@ -18,7 +20,8 @@ export const navLinks = [
   ["Home", "#landing"],
   ["Server Information", "#server"],
   ["Download", "#download"],
-  ["Donation", "#donation"], 
+  ["Donation", "#donation"],
+  ["Updates", "#updates"],
   ["Community", "#community"],
 ];
 
@@ -67,49 +70,133 @@ export const characterClasses = [
   },
 ];
 
-export const downloadItems = [
-  {
-    title: "Mega",
-    meta: "Full client mirror",
-    body: "Download the complete RAN Online: Awakening client through Mega.",
-    icon: MonitorDown,
-    href: "https://mega.nz/",
-  },
-  {
-    title: "Google Drive",
-    meta: "Alternative mirror",
-    body: "Use the Google Drive mirror if Mega is slow or unavailable in your region.",
-    icon: Download,
-    href: "https://drive.google.com/",
-  },{
-    title: "Media Fire",
-    meta: "Alternative mirror",
-    body: "Use the Media Fire mirror if Mega/Google Drive is slow or unavailable in your region.",
-    icon: Download,
-    href: "https://www.mediafire.com/",
-  },
-];
-
 export const communityLinks = [
-  { label: "Discord", value: "Live support and announcements", icon: MessageCircle, href: "https://discord.gg/your-invite" },
-  { label: "Facebook", value: "Events, Promotionals, and updates", icon: Globe2, href: "https://www.facebook.com/profile.php?id=61590630241347" },
+  {
+    label: "Discord",
+    value: "Live support and announcements",
+    icon: MessageCircle,
+    href: "https://discord.gg/your-invite",
+  },
+  {
+    label: "Facebook",
+    value: "Events, Promotionals, and updates",
+    icon: Globe2,
+    href: "https://www.facebook.com/profile.php?id=61590630241347",
+  },
 ];
 
-
-
-export const gcashAccounts = [
-  { name: "Juan Dela Cruz", number: "0917 XXX XXXX" },
-  { name: "Maria Santos", number: "0918 XXX XXXX" },
-  { name: "Pedro Reyes", number: "0919 XXX XXXX" },
-  { name: "Ana Garcia", number: "0920 XXX XXXX" },
-  { name: "Jose Ramirez", number: "0921 XXX XXXX" },
- 
+export const updates = [
+  {
+    date: "July 6, 2026",
+    title: "Server maintenance completed",
+    body: "Fixed login issues and improved server stability.",
+  },
+  {
+    date: "July 1, 2026",
+    title: "New event: Double EXP weekend",
+    body: "Enjoy 2x EXP rates this weekend only.",
+  },
 ];
-
-export const bankAccounts = [
-  { bank: "BDO", accountName: "Juan Dela Cruz", accountNumber: "XXXX XXXX XXXX" },
-  { bank: "BPI", accountName: "Maria Santos", accountNumber: "XXXX XXXX XXXX" },
-];
-
 
 export const serverFlag = false;
+
+/* ---------------------------------------------------------------------- */
+/* Donation accounts — sourced live from published Google Sheets           */
+/* ---------------------------------------------------------------------- */
+
+const GCASH_SHEET_URL =
+  "https://docs.google.com/spreadsheets/d/e/2PACX-1vSPAtB9yRxaDuGRdrMBEuRvVgv7IaKp4l_dI8IKS6dUv2oojSddFe6nN__huI6Bbdo6uUjBUP3aq8GC/pub?gid=1708314952&single=true&output=csv";
+
+// Same steps, but for a sheet/tab with BANK, ACCOUNT NAME, ACCOUNT NUMBER columns.
+// Adjust the column names in the mapRow below if yours differ.
+const BANK_SHEET_URL = "PASTE_YOUR_PUBLISHED_BANK_CSV_LINK_HERE";
+
+function useCsvSheet(url, mapRow) {
+  const [data, setData] = useState([]);
+  const [status, setStatus] = useState("loading"); // loading | ready | error
+
+  // mapRow is an inline function at every call site, so it gets a new
+  // reference on every render. Keeping it in a ref (instead of a useCallback
+  // dependency) means `load` only changes when `url` changes, which is what
+  // actually determines whether we need to re-fetch.
+  const mapRowRef = useRef(mapRow);
+  mapRowRef.current = mapRow;
+
+  const load = useCallback(() => {
+    setStatus("loading");
+    fetch(url)
+      .then((res) => {
+        if (!res.ok) throw new Error("Network response was not ok");
+        return res.text();
+      })
+      .then((csv) => {
+        const result = Papa.parse(csv, { header: true, skipEmptyLines: true });
+        const rows = (result.data || [])
+          .map((r) => mapRowRef.current(r))
+          .filter(Boolean);
+        setData(rows);
+        setStatus("ready");
+      })
+      .catch((err) => {
+        console.error(err);
+        setStatus("error");
+      });
+  }, [url]);
+
+  useEffect(() => {
+    load();
+  }, [load]);
+
+  return { data, status, reload: load };
+}
+
+export function useGcashAccounts() {
+  return useCsvSheet(GCASH_SHEET_URL, (r) => {
+    const number = r["GCASH NUMBER"]?.trim();
+    const name = r["GCASH NAME"]?.trim();
+    return number && name ? { number, name } : null;
+  });
+}
+
+export function useBankAccounts() {
+  return useCsvSheet(BANK_SHEET_URL, (r) => {
+    const bank = r["BANK"]?.trim();
+    const accountName = r["ACCOUNT NAME"]?.trim();
+    const accountNumber = r["ACCOUNT NUMBER"]?.trim();
+    return bank && accountName && accountNumber
+      ? { bank, accountName, accountNumber }
+      : null;
+  });
+}
+
+/* ---------------------------------------------------------------------- */
+/* Download mirrors — sourced live from a published Google Sheet           */
+/* ---------------------------------------------------------------------- */
+
+// Sheet/tab columns expected: TITLE, META, BODY, HREF
+// File > Share > Publish to web > select that tab > format: CSV > Publish
+const DOWNLOAD_SHEET_URL = "https://docs.google.com/spreadsheets/d/e/2PACX-1vSPAtB9yRxaDuGRdrMBEuRvVgv7IaKp4l_dl8lKS6dUv2oojSddFe6nN__huI6Bbdo6uUjBUP3aq8GC/pub?gid=216938593&single=true&output=csv";
+
+// The sheet can't carry a React icon component, so we look one up by title.
+// Anything not in this map falls back to the generic Download icon.
+const downloadIconMap = {
+  mega: MonitorDown,
+  "google drive": Download,
+  "media fire": Download,
+};
+
+function getDownloadIcon(title) {
+  return downloadIconMap[title?.toLowerCase()] || Download;
+}
+
+export function useDownloadItems() {
+  return useCsvSheet(DOWNLOAD_SHEET_URL, (r) => {
+    const title = r["TITLE"]?.trim();
+    const meta = r["META"]?.trim();
+    const body = r["BODY"]?.trim();
+    const href = r["HREF"]?.trim();
+    return title && href
+      ? { title, meta, body, href, icon: getDownloadIcon(title) }
+      : null;
+  });
+}

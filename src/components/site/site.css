@@ -25,7 +25,7 @@ button { font: inherit; }
 .iv-mobile-menu a { color: var(--muted); text-decoration: none; padding: 12px 0; border-bottom: 1px solid rgba(255,255,255,0.08); font-weight: 800; }
 .iv-hero { min-height: 760px; position: relative; isolation: isolate; overflow: hidden; display: flex; align-items: end; padding: 160px 0 64px; }
 .iv-hero-bg { position: absolute; inset: 0; width: 100%; height: 100%; object-fit: cover; object-position: center top; z-index: -3; filter: saturate(1.06) contrast(1.05); }
-.iv-hero::before { content: ""; position: absolute; inset: 0; z-index: -2; background: radial-gradient(circle at 74% 24%, rgba(214, 66, 43, 0.26), transparent 32%), linear-gradient(90deg, rgba(4,5,8,0.95) 0%, rgba(4,5,8,0.68) 42%, rgba(4,5,8,0.22) 100%), linear-gradient(to bottom, rgba(4,5,8,0.24), rgba(4,5,8,0.95) 88%); }
+.iv-hero::before { content: ""; position: absolute; inset: 0; z-index: -2; background: radial-gradient(circle at 74% 24%, rgba(214, 66, 43, 0.26), transparent 32%), linear-gradient(90deg, rgba(4,5,8,0.95) 0%, rgba(4,5,8,0.68) 42%, rgba(4,5,8,0.22) 100%), linear-gradient(to bottom, rgba(4,5,8,0.24), rgba(4,5,8,0.95) 70%); }
 .iv-hero::after { content: ""; position: absolute; inset: auto 0 0; height: 160px; z-index: -1; background: linear-gradient(to bottom, transparent, var(--night)); }
 .iv-hero-grid { display: grid; grid-template-columns: minmax(0, 680px) minmax(280px, 370px); align-items: end; justify-content: space-between; gap: 34px; }
 .iv-kicker { display: inline-flex; align-items: center; gap: 9px; color: var(--gold); background: rgba(10, 12, 16, 0.72); border: 1px solid var(--line); border-radius: 999px; padding: 8px 13px; font-size: 12px; font-weight: 900; letter-spacing: 0.1em; text-transform: uppercase; margin-bottom: 18px; }
@@ -153,3 +153,120 @@ button { font: inherit; }
   color: #fff;
 }
 #donation .iv-info-grid { grid-template-columns: repeat(2, 1fr); }
+
+
+
+
+
+
+.iv-update-card {
+  cursor: pointer;
+  transition: 0.2s ease;
+}
+
+.iv-update-card:hover {
+  transform: translateY(-3px);
+}
+
+.iv-modal-overlay {
+  position: fixed;
+  inset: 0;
+  background: rgba(0, 0, 0, 0.65);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  z-index: 999;
+}
+
+.iv-modal {
+  width: min(650px, 90%);
+  background: #111;
+  color: white;
+  border-radius: 12px;
+  padding: 30px;
+  position: relative;
+  max-height: 80vh;
+  overflow-y: auto;
+}
+
+.iv-modal h2 {
+  margin: 10px 0 20px;
+}
+
+.iv-modal p {
+  line-height: 1.7;
+  white-space: pre-wrap;
+}
+
+.iv-modal-close {
+  position: absolute;
+  top: 15px;
+  right: 15px;
+  border: none;
+  background: transparent;
+  color: white;
+  font-size: 24px;
+  cursor: pointer;
+}
+
+/* Updates / Dev Log */
+.iv-updates-timeline { position: relative; display: grid; gap: 22px; padding-left: 28px; }
+.iv-updates-timeline::before { content: ""; position: absolute; left: 5px; top: 6px; bottom: 6px; width: 1px; background: linear-gradient(to bottom, var(--ember), var(--gold), var(--jade)); opacity: 0.35; }
+.iv-update-node { position: relative; }
+.iv-update-dot { position: absolute; left: -28px; top: 22px; width: 11px; height: 11px; border-radius: 50%; background: var(--gold); box-shadow: 0 0 0 4px var(--night), 0 0 14px rgba(240,189,99,0.6); }
+.iv-update-dot--new { background: var(--jade); box-shadow: 0 0 0 4px var(--night), 0 0 16px rgba(92,200,166,0.75); }
+.iv-update-dot--skeleton { background: var(--dim); box-shadow: 0 0 0 4px var(--night); }
+
+.iv-update-card { position: relative; border: 1px solid rgba(255,255,255,0.1); border-left: 3px solid rgba(240,189,99,0.35); border-radius: 8px; background: rgba(255,255,255,0.045); padding: 20px 22px; }
+.iv-update-card:hover { border-left-color: var(--gold); background: rgba(255,255,255,0.07); }
+.iv-update-card--featured { border-left-color: var(--jade); background: linear-gradient(160deg, rgba(92,200,166,0.09), transparent 60%), rgba(255,255,255,0.045); }
+.iv-update-card h3 { margin: 6px 0 6px; font-size: 20px; }
+.iv-update-badge { position: absolute; top: -11px; right: 18px; display: inline-flex; align-items: center; gap: 5px; padding: 4px 10px; border-radius: 999px; background: var(--jade); color: var(--night); font-size: 10px; font-weight: 900; text-transform: uppercase; letter-spacing: 0.08em; }
+.iv-update-date { display: inline-flex; align-items: center; gap: 6px; color: var(--gold); font-size: 11px; font-weight: 900; text-transform: uppercase; letter-spacing: 0.1em; }
+.iv-update-excerpt { color: var(--muted); font-size: 14px; margin: 0 0 12px; }
+.iv-update-readmore { display: inline-flex; align-items: center; gap: 4px; color: var(--dim); font-size: 12px; font-weight: 800; text-transform: uppercase; letter-spacing: 0.05em; }
+.iv-update-card:hover .iv-update-readmore { color: var(--gold); }
+
+.iv-skeleton-line { height: 12px; border-radius: 4px; background: rgba(255,255,255,0.08); overflow: hidden; position: relative; }
+.iv-skeleton-line--sm { width: 90px; margin-bottom: 12px; }
+.iv-skeleton-line--lg { width: 60%; height: 18px; }
+.iv-skeleton-line::after { content: ""; position: absolute; inset: 0; background: linear-gradient(90deg, transparent, rgba(255,255,255,0.12), transparent); animation: iv-shimmer 1.4s infinite; }
+@keyframes iv-shimmer { from { transform: translateX(-100%); } to { transform: translateX(100%); } }
+
+.iv-updates-error, .iv-updates-empty { display: grid; justify-items: center; gap: 10px; padding: 50px 20px; border: 1px dashed var(--line); border-radius: 8px; color: var(--muted); text-align: center; }
+.iv-updates-error svg { color: var(--ember); }
+.iv-updates-empty svg { color: var(--gold); }
+.iv-updates-error strong, .iv-updates-empty strong { color: var(--ink); font-size: 17px; }
+.iv-updates-error p, .iv-updates-empty p { margin: 0; font-size: 13px; }
+
+.iv-modal { animation: iv-modal-in 0.2s ease; }
+@keyframes iv-modal-in { from { opacity: 0; transform: translateY(8px) scale(0.98); } to { opacity: 1; transform: translateY(0) scale(1); } }
+.iv-modal-date { display: inline-flex; align-items: center; gap: 6px; color: var(--gold); font-size: 12px; font-weight: 900; text-transform: uppercase; letter-spacing: 0.1em; margin-bottom: 6px; }
+
+@media (max-width: 640px) {
+  .iv-updates-timeline { padding-left: 22px; }
+  .iv-update-dot { left: -22px; }
+  .iv-update-badge { position: static; display: inline-flex; margin-bottom: 8px; }
+}
+
+
+
+
+.iv-donate-panel { border: 1px solid rgba(255,255,255,0.1); border-radius: 8px; background: var(--panel); padding: 26px; margin-top: 8px; }
+
+.iv-donate-tabs { position: relative; display: inline-flex; gap: 4px; padding: 4px; border-radius: 999px; background: rgba(255,255,255,0.05); border: 1px solid rgba(255,255,255,0.1); margin-bottom: 24px; }
+.iv-donate-tab { position: relative; z-index: 1; display: inline-flex; align-items: center; gap: 8px; min-height: 40px; padding: 0 18px; border: 0; border-radius: 999px; background: transparent; color: var(--muted); font-weight: 800; font-size: 13px; text-transform: uppercase; letter-spacing: 0.05em; cursor: pointer; transition: color 0.2s ease; }
+.iv-donate-tab.active { color: var(--night); }
+.iv-donate-tab-indicator { position: absolute; top: 4px; left: 4px; width: calc(50% - 4px); height: calc(100% - 8px); border-radius: 999px; background: linear-gradient(135deg, var(--gold), #fff0ad 48%, var(--ember)); transition: transform 0.25s cubic-bezier(0.4,0,0.2,1); z-index: 0; }
+
+.iv-quest-log { margin-top: 44px; }
+.iv-quest-steps { list-style: none; margin: 18px 0 0; padding: 0; display: grid; gap: 18px; }
+.iv-quest-step { display: grid; grid-template-columns: 40px 1fr; gap: 16px; align-items: start; }
+.iv-quest-num { font-family: 'Bebas Neue', Impact, sans-serif; font-size: 26px; line-height: 1; color: var(--gold); background: rgba(240,189,99,0.08); border: 1px solid rgba(240,189,99,0.24); border-radius: 8px; width: 40px; height: 40px; display: grid; place-items: center; }
+.iv-quest-step strong { display: block; margin-bottom: 4px; font-size: 15px; }
+.iv-quest-step p { margin: 0; color: var(--muted); font-size: 14px; }
+
+@media (max-width: 640px) {
+  .iv-donate-tabs { width: 100%; }
+  .iv-donate-tab { flex: 1; justify-content: center; }
+}
